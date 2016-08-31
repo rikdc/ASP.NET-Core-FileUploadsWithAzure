@@ -5,6 +5,6 @@ namespace AspNet_AzureUpload.Service
 {
     public interface IDocumentService
     {
-        Task<string> UploadDocument(IFormFile document);
+        Task<string> UploadDocument(string path, IFormFile document);
     }
 }

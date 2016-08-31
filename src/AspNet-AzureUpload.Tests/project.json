@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "AspNet-AzureUpload.Service": "1.0.0-*",
+    "NETStandard.Library": "1.6.0",
+    "xunit": "2.1.0",
+    "Moq": "4.6.36-alpha"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": [ "dnxcore50", "portable-net451+win8" ]
+    }
+  }
+}
