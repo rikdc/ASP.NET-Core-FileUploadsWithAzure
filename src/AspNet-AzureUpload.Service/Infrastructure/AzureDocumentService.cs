@@ -10,23 +10,24 @@ namespace AspNet_AzureUpload.Service.Infrastructure
     public class AzureDocumentService : IDocumentService
     {
         private readonly IOptions<AzureSettings> _options;
+        private readonly CloudStorageAccount _storageAccount;
 
-        public AzureDocumentService(IOptions<AzureSettings> options)
+        public AzureDocumentService(CloudStorageAccount storageAccount, IOptions<AzureSettings> options)
         {
+            _storageAccount = storageAccount;
             _options = options;
         }
 
         public async Task<string> UploadDocument(string path, IFormFile document)
         {
-            var storageAccount = CloudStorageAccount.Parse(_options.Value.ConnectionString);
-            var container = storageAccount.CreateCloudBlobClient().GetContainerReference(_options.Value.ContainerName);
+            var container = _storageAccount.CreateCloudBlobClient().GetContainerReference(_options.Value.ContainerName);
             
             await container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Container, new BlobRequestOptions(), new OperationContext());
 
             var fileName = (ContentDispositionHeaderValue.Parse(document.ContentDisposition).FileName).Trim('"').ToLower();
             var blob = path + "/" + fileName;
 
-            var blockBlob = container.GetBlockBlobReference(blob);
+            var blockBlob = await container.GetBlobReferenceFromServerAsync(blob);
             
             blockBlob.Properties.ContentType = document.ContentType;
 
