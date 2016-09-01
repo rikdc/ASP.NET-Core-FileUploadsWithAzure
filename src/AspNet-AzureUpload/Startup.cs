@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AspNet_AzureUpload.Service;
+using Microsoft.WindowsAzure.Storage;
+using AspNet_AzureUpload.Service.Infrastructure;
 
 namespace AspNet_AzureUpload
 {
@@ -21,6 +23,8 @@ namespace AspNet_AzureUpload
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -31,7 +35,14 @@ namespace AspNet_AzureUpload
             // Add framework services.
             services.AddMvc();
 
-            services.Configure<AzureSettings>(Configuration);
+            services.Configure<AzureSettings>(Configuration.GetSection("AzureSettings"));
+
+            var cloudStorageAccountSettings = Configuration.GetValue<string>("AzureSettings:ConnectionString");
+            var cloudStorage = CloudStorageAccount.Parse(cloudStorageAccountSettings);
+
+            services.AddSingleton(cloudStorage);
+
+            services.AddScoped<IDocumentService, AzureDocumentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
