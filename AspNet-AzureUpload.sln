@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{022909F8-6BA3-4D62-8EDE-329157EFB0A2}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
+		README.ms = README.ms
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNet-AzureUpload.Service", "src\AspNet-AzureUpload.Service\AspNet-AzureUpload.Service.xproj", "{3B78971D-611A-4903-A121-FBAD9ADA7A9A}"
